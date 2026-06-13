@@ -1,0 +1,49 @@
+name: Post Instagram - sexta-19jun-post-camabox-livorno
+
+on:
+  schedule:
+    - cron: '0 12 19 6 *'
+  workflow_dispatch:
+
+jobs:
+  post-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post no Instagram (Feed)
+        env:
+          IG_ACCOUNT_ID: ${{ secrets.IG_ACCOUNT_ID }}
+          IG_PAGE_TOKEN: ${{ secrets.IG_PAGE_TOKEN }}
+          CAPTION: |
+            O conjunto que faz a diferença quando o jogo aperta. 🏆
+            
+            A Cama Box Casal Livorno entrou em campo — e chegou pra ser titular.
+            
+            ⚽ Conjunto completo: box + colchão
+            ⚽ Design elegante para qualquer quarto
+            ⚽ Conforto que você sente na primeira noite
+            
+            🛏️ Cama Box Casal Livorno
+            💰 R$ 2.090,00 — 12x de R$ 174,17 sem juros
+            🚚 Entrega e montagem grátis*
+            
+            Copa do Mundo é uma vez a cada 4 anos.
+            Dormir bem pode ser toda noite. 💛🇧🇷
+            
+            📲 WhatsApp: (17) 3324-5765
+            📞 Telefone: (17) 3325-6039
+            📍 Rua 20 Esq. Av. 13, 1110 — Barretos/SP
+            
+            *Consulte condições.
+        run: python3 scripts/post_instagram.py "https://raw.githubusercontent.com/luizglopesx/selecao-de-ofertas-colchoes-cia/main/assets/sexta-19jun-post-camabox-livorno.png" POST
+
+  post-story:
+    runs-on: ubuntu-latest
+    needs: post-feed
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post no Instagram (Story)
+        env:
+          IG_ACCOUNT_ID: ${{ secrets.IG_ACCOUNT_ID }}
+          IG_PAGE_TOKEN: ${{ secrets.IG_PAGE_TOKEN }}
+        run: python3 scripts/post_instagram.py "https://raw.githubusercontent.com/luizglopesx/selecao-de-ofertas-colchoes-cia/main/assets/sexta-19jun-story-camabox-livorno.png" STORY
