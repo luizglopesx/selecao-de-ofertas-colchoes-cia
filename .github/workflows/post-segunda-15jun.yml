@@ -1,0 +1,52 @@
+name: Post Instagram - segunda-15jun-post
+
+on:
+  schedule:
+    - cron: '0 12 15 6 *'
+  workflow_dispatch:
+
+jobs:
+  post-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post no Instagram (Feed)
+        env:
+          IG_ACCOUNT_ID: ${{ secrets.IG_ACCOUNT_ID }}
+          IG_PAGE_TOKEN: ${{ secrets.IG_PAGE_TOKEN }}
+          CAPTION: |
+            A Copa chegou — e a Colchões & Cia escalou a melhor formação do ano. ⚽🇧🇷
+            
+            Apresentamos a campanha Seleção de Ofertas: os produtos campeões da loja em campo com condições especiais durante todo o mês da Copa do Mundo 2026.
+            
+            🏆 Só os melhores entram em campo:
+            
+            🛏️ Colchão Casal D33 Castor — R$ 1.690,00
+               12x de R$ 140,83 sem juros
+            
+            🛏️ Cama Box Casal Livorno — R$ 2.090,00
+               12x de R$ 174,17 sem juros
+            
+            ✅ Entrega grátis* | Montagem inclusa*
+            
+            Porque torcedor que se preza dorme bem antes de cada jogo. 💛
+            
+            Corre aqui e garante o seu — o apito já tocou!
+            
+            📲 WhatsApp: (17) 3324-5765
+            📞 Telefone: (17) 3325-6039
+            📍 Rua 20 Esq. Av. 13, 1110 — Barretos/SP
+            
+            *Consulte condições.
+        run: python3 scripts/post_instagram.py "https://raw.githubusercontent.com/luizglopesx/selecao-de-ofertas-colchoes-cia/main/assets/segunda-15jun-post.png" POST
+
+  post-story:
+    runs-on: ubuntu-latest
+    needs: post-feed
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post no Instagram (Story)
+        env:
+          IG_ACCOUNT_ID: ${{ secrets.IG_ACCOUNT_ID }}
+          IG_PAGE_TOKEN: ${{ secrets.IG_PAGE_TOKEN }}
+        run: python3 scripts/post_instagram.py "https://raw.githubusercontent.com/luizglopesx/selecao-de-ofertas-colchoes-cia/main/assets/segunda-15jun-story.png" STORY
